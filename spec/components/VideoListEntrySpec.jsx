@@ -36,6 +36,7 @@ describe('VideoListEntry', function() {
   });
 
   it('should dynamically render a video\'s image', function() {
+  
     var cuteCatVideoImageElement = findRenderedDOMComponentWithClass(cuteCatVideo, 'media-object');
     var superCuteCatVideoImageElement = findRenderedDOMComponentWithClass(superCuteCatVideo, 'media-object');
     var hackReactorVideoImageElement = findRenderedDOMComponentWithClass(hackReactorVideo, 'media-object');
