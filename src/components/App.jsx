@@ -5,16 +5,11 @@ class App extends React.Component {
     // this.props.searchYouTube();
     // var AppContext = this;
     // var search = function() {
-    this.options = {
-      query: 'React',
-      max: 5,
-      key: window.YOUTUBE_API_KEY
-    };
+    
 
     this.state = {
+      videos: exampleVideoData,
       currentPlay: exampleVideoData[0],
-      searchQuery: '',
-      queryResults: []
     };
   }
 
@@ -24,16 +19,19 @@ class App extends React.Component {
     });
   }
 
-  onSearchVideoQuery (event) {
-    this.setState({
-      searchQuery: event.target.value
-    });
-    console.log('searchQuery', searchQuery);
+  onSearchVideoQuery (query) {
+    this.options = {
+      query: query,
+      max: 5,
+      key: window.YOUTUBE_API_KEY
+    };
+    this.props.searchYouTube(this.options, this.callback.bind(this));
   }
 
   callback(data) {
     this.setState({
-      queryResults: data
+      videos: data,
+      currentPlay: data[0]
     });
   }
 
@@ -46,7 +44,7 @@ class App extends React.Component {
         <VideoPlayer video={this.state.currentPlay}/>
       </div>
       <div className="col-md-5">
-        <VideoList videos={exampleVideoData} listener={this.onClickVideoEntry.bind(this)}/>
+        <VideoList videos={this.state.videos} listener={this.onClickVideoEntry.bind(this)}/>
       </div>
     </div>
     );
@@ -54,8 +52,10 @@ class App extends React.Component {
 
 
   componentDidMount() {
-    this.props.searchYouTube(this.options, this.callback.bind(this));
-    console.log('results', this.state.queryResults);
+    //this.props.searchYouTube(this.options, this.callback.bind(this));
+    this.onSearchVideoQuery('pokemon');
+
+    // console.log('results', this.state.queryResults);
   }
 }
 
