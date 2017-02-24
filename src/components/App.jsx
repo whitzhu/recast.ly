@@ -1,8 +1,20 @@
 class App extends React.Component {
   constructor (props) {
     super(props);
+    // this.props.searchYouTube(arguments);
+    // this.props.searchYouTube();
+    // var AppContext = this;
+    // var search = function() {
+    this.options = {
+      query: 'React',
+      max: 5,
+      key: window.YOUTUBE_API_KEY
+    };
+
     this.state = {
-      currentPlay: exampleVideoData[0]
+      currentPlay: exampleVideoData[0],
+      searchQuery: '',
+      queryResults: []
     };
   }
 
@@ -12,11 +24,24 @@ class App extends React.Component {
     });
   }
 
+  onSearchVideoQuery (event) {
+    this.setState({
+      searchQuery: event.target.value
+    });
+    console.log('searchQuery', searchQuery);
+  }
+
+  callback(data) {
+    this.setState({
+      queryResults: data
+    });
+  }
+
   render () {
 
     return (
     <div>
-      <Nav />
+      <Nav query={this.onSearchVideoQuery.bind(this)}/>
       <div className="col-md-7">
         <VideoPlayer video={this.state.currentPlay}/>
       </div>
@@ -25,6 +50,12 @@ class App extends React.Component {
       </div>
     </div>
     );
+  }
+
+
+  componentDidMount() {
+    this.props.searchYouTube(this.options, this.callback.bind(this));
+    console.log('results', this.state.queryResults);
   }
 }
 
